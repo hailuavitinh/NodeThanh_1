@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "description": " First nodeJS web app",
   "dependencies": {
-    "express": "^4.10.1"
+    "express": "^4.14.0"
   }
 }
