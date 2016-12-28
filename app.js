@@ -8,7 +8,8 @@ var routes = require("./app_server/routes/index");
 var app = express();
 var port = process.env.port || 3000;
 app.set("views",path.join(__dirname,"app_server","views"));
-app.set("view engine","ejs");
+app.set("view engine","jade");
+app.use(express.static(path.join(__dirname,'public')));
 
 app.use("/",routes);
 //app.use("/users",users);
