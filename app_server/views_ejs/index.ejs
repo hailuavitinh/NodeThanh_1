@@ -1,4 +1,16 @@
-<% include layout %>
-<h1><%=title%></h1>
-<p>Welcome to <%=title%></p>
-<%include layoutFooter.ejs %>
+<!DOCTYPE html>
+<html>
+    <header>
+        <% include ./layout/header %>
+    </header>
+    <body>
+        <% include ./layout/navbar %>
+        <!-- Begin Content  -->
+            <h1><%=title%></h1>
+            <p>Welcome to <%=title%></p>
+        <!-- end Content  -->
+        <footer>
+            <% include ./layout/footer %>
+        </footer>
+    </body>
+</html>

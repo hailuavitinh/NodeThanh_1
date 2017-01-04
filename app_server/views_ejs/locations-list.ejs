@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <% include ./layout/header %>
+    </header>
+    <body>
+        <% include ./layout/navbar %>
+        <!-- Begin Content  -->
+            <h1><%=title%></h1>
+            <p>Welcome to <%=title%></p>
+            <div id="banner" class="page-header">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1>Loc8r</h1>
+                        <small>&nbsp;Find places to work with wifi near you !</small>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+                    <p>List area</p>
+                    <div class="list-group">
+                        <div class="col-xs-12 list-group-item">
+                            <h4>
+                                <a href="/location">Starcups</a>
+                                <small>&nbsp;
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                </small>
+                                <span class="badge pull-right badge-default">100m</span>
+                            </h4>
+                            <p class="address">125 High Street, Reading, RG6 1PS</p>
+                            <p>
+                                <span class="label label-warning">Hot drinks</span>
+                                &nbsp;
+                                <span class="label label-warning">Food</span>
+                                &nbsp;
+                                <span class="label label-warning">Premium wifi</span>
+                                &nbsp;
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-4">
+                    <p class="lead"> Loc8r helps you find places to work when out about.</p>
+                </div>
+            </div>
+        <!-- end Content  -->
+        <footer>
+            <% include ./layout/footer %>
+        </footer>
+    </body>
+</html>

@@ -4,7 +4,7 @@ var ctrlLocations = require("../controllers/ctrlLocation");
 var ctrlOthers = require("../controllers/ctrlOther")
 
 /*Get home page */
-router.get("/",ctrlLocations.index);
+router.get("/",ctrlLocations.homelist);
 router.get("/location",ctrlLocations.locationInfo);
 router.get("/location/review/new",ctrlLocations.addReview);
 
