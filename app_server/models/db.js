@@ -58,5 +58,5 @@ process.on("SIGTERM",function(){
     });
 });
 
-
+require("./locations");
 
