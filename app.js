@@ -2,11 +2,12 @@ var express = require("express");
 var path = require('path');
 var fs = require("fs");
 var https = require("https");
-require("./app_server/models/db.js");
+require("./app_api/models/db.js");
 
 
 //require manual module
 var routes = require("./app_server/routes/index");
+var routesApi = require("./app_api/routes/index");
 //var users = require("./app_server/routes/users");
 
 var app = express();
@@ -16,6 +17,7 @@ app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname,'public')));
 
 app.use("/",routes);
+app.use("/api",routesApi);
 
 https.createServer({
     key:fs.readFileSync("certs/key.pem"),
