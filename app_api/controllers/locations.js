@@ -101,3 +101,20 @@ module.exports.locationsReadOne = function(req,res){
         sendResponseJson(res,404,{"message":"Please check parameter"})
     }
 }
+
+// module.exports.locationsUpdateOne = function(req,res){
+//     if(req.params && req.params.locationid){
+//         Loc.findById(req.params.locationid)
+//             .select("-reviews -rating")
+//            .exec(function(err,location){
+//                 if(err){
+//                     sendResponseJson(res,404,{"message":"Execute find locationid error"});
+//                     return;
+//                 } else {
+
+//                 }
+//            });
+//     } else {
+//         sendResponseJson(res,404,{"message":"Not found locationid parameter"});
+//     }
+// }
