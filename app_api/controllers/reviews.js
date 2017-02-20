@@ -15,13 +15,49 @@ module.exports.reviewsCreate = function(req,res){
                 if(err){
                     sendResponseJson(res,404,err);
                 } else {
-                    
+                    doAddReview(req,res,location);
                 }
             })
     } else{
         sendResponseJson(res,404,{"message":"please check parameter"});
     }
-}
+};
+
+module.exports.reviewsUpdateOne = function(req,res){
+    if(req.params && req.params.locationid & req.params.reviewid){
+        Loc.findById(req.params.locationid)
+           .select("reviews")
+           .exec(function(err,location){
+               if(err){
+                   sendResponseJson(res,404,{"message":"Execute Found location error"});
+                   return;
+               }
+
+               if(location){
+                    var thisreview = location.reviews.id(req.params.reviewid);
+                    if(thisreview){
+                        thisreview.author = req.body.author;
+                        thisreview.rating = req.body.rating;
+                        thisreview.reviewText = req.body.reviewText;
+                        location.save(function(err,location){
+                            if(err){
+                                sendResponseJson(res,404,{"message":"Execute save error"});
+                            } else{
+                                updateAverageRating(location._id);
+                                sendResponseJson(res,200,thisreview);
+                            }
+                        })
+                    }else{
+                        sendResponseJson(res,404,{"message":"Not found review "});
+                    }
+               } else{
+                    sendResponseJson(res,404,{"message":"Not found location"});
+               }
+           })
+    } else{
+        sendResponseJson(res,404,{"message":"Not found parameter"});
+    }
+};
 
 var doAddReview = function(req,res,location){
     if(location){
@@ -108,5 +144,36 @@ module.exports.reviewsReadOne = function(req,res){
            })
     } else {
         sendResponseJson(res,404,{"message":"please check parameter"});
+    }
+}
+
+module.exports.reviewsDeleteOne = function(req,res){
+    var reviewid =req.params.reviewid;
+    var locationid = req.params.locationid;
+    if(reviewid && locationid){
+        Loc.findById(locationid)
+           .select("reviews")
+           .exec(function(err,location){
+                if(err){
+                    sendResponseJson(res,404,{"message":"Execute found location error"});
+                    return;
+                } else if (!location){
+                    sendResponseJson (res,404,{"message":"Not found location"});
+                    return;
+                }
+
+                location.reviews.id(reviewid).remove();
+                location.save(function(err){
+                    if(err){
+                        sendResponseJson(res,404,{"message":"Execute Save Deleve error"});
+                    }else{
+                        updateAverageRating(locationid);
+                        sendResponseJson(res,204,null);
+                    }
+                });
+
+           });
+    } else{
+        sendResponseJson(res,404,{"message":"Not found parameter"});
     }
 }

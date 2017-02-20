@@ -102,19 +102,60 @@ module.exports.locationsReadOne = function(req,res){
     }
 }
 
-// module.exports.locationsUpdateOne = function(req,res){
-//     if(req.params && req.params.locationid){
-//         Loc.findById(req.params.locationid)
-//             .select("-reviews -rating")
-//            .exec(function(err,location){
-//                 if(err){
-//                     sendResponseJson(res,404,{"message":"Execute find locationid error"});
-//                     return;
-//                 } else {
+module.exports.locationsUpdateOne = function(req,res){
+    if(req.params && req.params.locationid){
+        Loc.findById(req.params.locationid)
+            .select("-reviews -rating")
+           .exec(function(err,location){
+                if(err){
+                    sendResponseJson(res,404,{"message":"Execute find locationid error"});
+                    return ;
+                }
 
-//                 }
-//            });
-//     } else {
-//         sendResponseJson(res,404,{"message":"Not found locationid parameter"});
-//     }
-// }
+                if(location){
+                    location.name = req.body.name;
+                    location.address = res.body.address;
+                    location.facilities = res.body.facilities.split(',');
+                    location.coords = [parseFloat(req.body.lng),parseFloat(req.body.lat)];
+                    location.openingTimes = [{
+                        days:req.body.days1,
+                        opening:req.body.opening1,
+                        closing1: req.body.closing1,
+                        closed1:req.body.closed1
+                    },{
+                        days:req.body.days2,
+                        opening:req.body.opening2,
+                        closing1: req.body.closing2,
+                        closed1:req.body.closed2
+                    }];
+
+                    location.save(function(err,location){
+                        if(err){
+                            sendResponseJson(res,404,{"message":"Server not update"});
+                        } else{
+                            sendResponseJson(res,200,location);
+                        }
+                    })
+                }else{
+                    sendResponseJson(res,404,{"message":"Not found data"});
+                }
+           });
+    } else {
+        sendResponseJson(res,404,{"message":"Not found locationid parameter"});
+    }
+}
+
+module.exports.locationsDeleteOne = function(req,res){
+    if(req.params && req.params.locationid){
+        sendResponseJson(res,404,{"message":"Not found parameter"});
+        return;
+    }
+    Loc.findByIdAndRemove(req.params.locationid)
+       .exec(function(err,location){
+           if(err){
+               sendResponseJson(res,404,{"message":"Execute delete error"});
+           } else {
+               sendResponseJson(res,204,null);
+           }
+       })
+}
