@@ -23,40 +23,60 @@ var theEarth = (function(){
 })();
 
 module.exports.locationsListByDistance = function (req,res) {
+
+    console.log("Access locationsListByDistance");
+
     var lng = parseFloat(req.query.lng);
     var lat = parseFloat(req.query.lat);
-    var point = {
-        type: "Point",
-        coordinates:[lng,lat]
-    };
 
-    var geoOptions = {
-        spherical:true,
-        maxDistance: theEarth.getRadsFromDistance(20),
-        num:10
-    };
+    if(lng && lat){
+        var point = {
+            type: "Point",
+            coordinates:[lng,lat]
+        };
 
-    Loc.geoNear(point,geoOptions,function(err,results,stats){
-        if(err){
-            sendResponseJson(res,404,err);
-        } else {
-            var locations = [];
-            results.forEach(function(doc){
-                location.push({
-                    distance:theEarth.getDistanceFromRads(doc.dis),
-                    name:doc.obj.name,
-                    address:doc.obj.address,
-                    rating: doc.obj.rating,
-                    facilities: doc.obj.facilities,
-                    _id:doc.obj._id
+        var geoOptions = {
+            spherical:true,
+            maxDistance: theEarth.getRadsFromDistance(20),
+            num:10
+        };
+
+        Loc.geoNear(point,geoOptions,function(err,results,stats){
+            if(err){
+                sendResponseJson(res,404,err);
+            } else {
+                var locations = [];
+                results.forEach(function(doc){
+                    location.push({
+                        distance:theEarth.getDistanceFromRads(doc.dis),
+                        name:doc.obj.name,
+                        address:doc.obj.address,
+                        rating: doc.obj.rating,
+                        facilities: doc.obj.facilities,
+                        _id:doc.obj._id
+                    });
                 });
-            });
-            sendResponseJson(res,200,locations);
-        }
-    });
+                sendResponseJson(res,200,locations);
+            }
+        });
+    } else {
+        Loc.find()
+           .exec(function(err,locations){
+               if(err){
+                   sendResponseJson(res,404,{"message":"Execute error"});
+               } else {
+                   sendResponseJson(res,200,locations);
+               }
+           })
+    }
+
+    
 }
 //10.738071, 106.627914
 module.exports.locationsCreate = function(req,res){
+
+    console.log("Insert ",req.body);
+
     var location = {
         name: req.body.name,
         address: req.body.address,
