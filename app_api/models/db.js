@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var readLine = require("readline")
 var dbURI = "mongodb://thanhdc:123@ds051110.mlab.com:51110/db_thanhdc";
+mongoose.Promise = global.Promise;
 mongoose.connect(dbURI);
 mongoose.connection.on("connected",function(){
     console.log("Mongoose connected to :" + dbURI);

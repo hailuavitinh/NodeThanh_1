@@ -24,7 +24,7 @@ module.exports.reviewsCreate = function(req,res){
 };
 
 module.exports.reviewsUpdateOne = function(req,res){
-    if(req.params && req.params.locationid & req.params.reviewid){
+    if(req.params && req.params.locationid && req.params.reviewid){
         Loc.findById(req.params.locationid)
            .select("reviews")
            .exec(function(err,location){

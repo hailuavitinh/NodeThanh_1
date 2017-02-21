@@ -123,6 +123,7 @@ module.exports.locationsReadOne = function(req,res){
 }
 
 module.exports.locationsUpdateOne = function(req,res){
+
     if(req.params && req.params.locationid){
         Loc.findById(req.params.locationid)
             .select("-reviews -rating")
@@ -134,8 +135,8 @@ module.exports.locationsUpdateOne = function(req,res){
 
                 if(location){
                     location.name = req.body.name;
-                    location.address = res.body.address;
-                    location.facilities = res.body.facilities.split(',');
+                    location.address = req.body.address;
+                    location.facilities = req.body.facilities.split(',');
                     location.coords = [parseFloat(req.body.lng),parseFloat(req.body.lat)];
                     location.openingTimes = [{
                         days:req.body.days1,
@@ -166,7 +167,10 @@ module.exports.locationsUpdateOne = function(req,res){
 }
 
 module.exports.locationsDeleteOne = function(req,res){
-    if(req.params && req.params.locationid){
+
+    console.log("Access locationsDeleteOne");
+
+    if(!(req.params && req.params.locationid)){
         sendResponseJson(res,404,{"message":"Not found parameter"});
         return;
     }
@@ -175,7 +179,7 @@ module.exports.locationsDeleteOne = function(req,res){
            if(err){
                sendResponseJson(res,404,{"message":"Execute delete error"});
            } else {
-               sendResponseJson(res,204,null);
+               sendResponseJson(res,204,location);
            }
        })
 }
