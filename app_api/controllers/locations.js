@@ -47,7 +47,7 @@ module.exports.locationsListByDistance = function (req,res) {
             } else {
                 var locations = [];
                 results.forEach(function(doc){
-                    location.push({
+                    locations.push({
                         distance:theEarth.getDistanceFromRads(doc.dis),
                         name:doc.obj.name,
                         address:doc.obj.address,
@@ -61,11 +61,12 @@ module.exports.locationsListByDistance = function (req,res) {
         });
     } else {
         Loc.find()
-           .exec(function(err,locations){
+           .exec(function(err,results){
                if(err){
                    sendResponseJson(res,404,{"message":"Execute error"});
                } else {
-                   sendResponseJson(res,200,locations);
+                    
+                   sendResponseJson(res,200,results);
                }
            })
     }
