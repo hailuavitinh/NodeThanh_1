@@ -35,7 +35,11 @@ module.exports.homelist = function(req,res){
     requestOptions = {
         url:apiOptions.server + path,
         method:"GET",
-        json:{}
+        json:{},
+        qs:{
+            lng: 106.628732,
+            lat:10.738236
+        }
     };
 
     console.log("RequestOptions: ",requestOptions);

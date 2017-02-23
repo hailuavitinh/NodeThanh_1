@@ -30,6 +30,9 @@ module.exports.locationsListByDistance = function (req,res) {
     var lat = parseFloat(req.query.lat);
 
     if(lng && lat){
+
+        console.log("Acesss API location query string " + lng + " -- "+lat);
+
         var point = {
             type: "Point",
             coordinates:[lng,lat]
@@ -37,7 +40,7 @@ module.exports.locationsListByDistance = function (req,res) {
 
         var geoOptions = {
             spherical:true,
-            maxDistance: theEarth.getRadsFromDistance(20),
+            maxDistance: 5000,//theEarth.getRadsFromDistance(20),
             num:10
         };
 
@@ -46,9 +49,10 @@ module.exports.locationsListByDistance = function (req,res) {
                 sendResponseJson(res,404,err);
             } else {
                 var locations = [];
+                console.log("-- Distance :",results);
                 results.forEach(function(doc){
                     locations.push({
-                        distance:theEarth.getDistanceFromRads(doc.dis),
+                        distance:doc.dis, //theEarth.getDistanceFromRads(doc.dis),
                         name:doc.obj.name,
                         address:doc.obj.address,
                         rating: doc.obj.rating,
@@ -56,6 +60,7 @@ module.exports.locationsListByDistance = function (req,res) {
                         _id:doc.obj._id
                     });
                 });
+                console.log("Locations: ",locations)
                 sendResponseJson(res,200,locations);
             }
         });
