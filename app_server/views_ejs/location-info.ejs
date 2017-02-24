@@ -19,21 +19,27 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6">
                             <p class="rating">
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <span class="glyphicon glyphicon-star-empty"></span>
-                                <p>125 Hight Street, Reading, RG6 1PS</p>
+                                <%for (var i = 1 ; i < 5 ; i ++){
+                                    if(i <= location.rating){%>
+                                        <span class="glyphicon glyphicon-star"></span>
+                                    <%} else {%>
+                                        <span class="glyphicon glyphicon-star-empty"></span>
+                                    <%}
+                                }%>
+                                <p><%=location.address %></p>
                             </p>
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h2 class="panel-title">Open hours</h2>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Monday - Friday : 7:00am - 7:00pm </p>
-                                    <p>Staturday : 8:00am - 5:00pm </p>
-                                    <p>Sunday : closed </p>
+                                    <%for(var i = 0 ; i < location.openingTimes.length ; i++){
+                                        if(location.openingTimes[i].closed == true){%>
+                                            <p><%=location.openingTimes[i].days + ' : closed'%></p>
+                                        <%} else {%>
+                                            <p><%=location.openingTimes[i].days + ' : ' + location.openingTimes[i].opening + ' - ' + location.openingTimes[i].closing%></p>
+                                        <%}
+                                    }%>                                   
                                 </div>
                             </div>
                             <div class="panel panel-primary">
@@ -41,9 +47,9 @@
                                     <h2 class="panel-title">Facilities</h2>
                                 </div>
                                 <div class="panel-body">
-                                    <span class="label label-warning"><span class="glyphicon glyphicon-ok">&nbsp;Hot drinks</span></span>
-                                    <span class="label label-warning"><span class="glyphicon glyphicon-ok">&nbsp;Food</span></span>
-                                    <span class="label label-warning"><span class="glyphicon glyphicon-ok">&nbsp;Premium wifi</span></span>
+                                    <%for(var i = 0 ; i < location.facilities.length ; i++){%>
+                                        <span class="label label-warning"><span class="glyphicon glyphicon-ok"><%=location.facilities[i]%></span></span>
+                                    <%}%>    
                                 </div>
                             </div>
                         </div>
@@ -53,8 +59,8 @@
                                     <h2 class="panel-title">Location Map</h2>
                                 </div>
                                 <div class="panel-body">
-                                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=Viet+Nam,+Tran+Hung+Dao,+Ben+Thanh&zoom=14&scale=false&size=580x400&maptype=roadmap&format=png&visual_refresh=true"
-                                        class="img-responsive img-rounded" height="auto">
+                                    <img src="<%='https://maps.googleapis.com/maps/api/staticmap?center='+location.coords.lat+','+location.coords.lng+'&zoom=14&sensor=false&size=580x400&scale=1&markers='+location.coords.lat+','+location.coords.lng%>"
+                                    class="img-responsive img-rounded" height="auto">
                                 </div>
                             </div>
                         </div>
@@ -67,6 +73,12 @@
                                     <h2 class="panel-title"> Customer reviews</h2>
                                 </div>
                                 <div class="panel-body review-container">
+                                    <%for(var i = 0 ; i < locations.reviews.length ; i++){%>
+                                        
+                                    }%>
+
+
+
                                     <div class="row">
                                         <div class="review">
                                             <div class="well well-sm review-header">

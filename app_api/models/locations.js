@@ -20,7 +20,7 @@ var locationSchema =  new mongoose.Schema({
     rating: { type: Number, "default":0, min: 0, max: 5},
     facilities:[String],
     coords: {type:[Number],index:"2dsphere" },
-    openTimes:[openTimeSchema],
+    openingTimes:[openTimeSchema],
     reviews:[reviewSchema]
 });
 
