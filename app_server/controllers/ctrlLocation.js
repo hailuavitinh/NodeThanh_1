@@ -6,9 +6,6 @@ if(process.env.NODE_ENV === "production"){
 }
 
 
-
-
-
 module.exports.locationInfo = function(req,res){
     //res.render("location-info",{title:"Location Info"});
     var requestOptions, path;
@@ -19,21 +16,20 @@ module.exports.locationInfo = function(req,res){
         json:{},
         qs:{}
     };
-
-    console.log("RequestOptions: ",requestOptions);
     request(requestOptions,function(err,responseApi,body){
-        var data = body;
-        console.log("Request Detail: ",data);
-        console.log("openingTimes: ",data.openingTimes.length);
-        data.coords = {
-            lng: body.coords[0],
-            lat: body.coords[1]
-        };
-
-        for( var i = 0 ; i < data.reviews.length;i++){
-            data.reviews[i].createdOn = dateformat(data.reviews[i].createdOn,"dd/mm/yyyy HH:MM");
+        if(responseApi.statusCode === 200){
+            var data = body;
+            data.coords = {
+                lng: body.coords[0],
+                lat: body.coords[1]
+            };
+            for( var i = 0 ; i < data.reviews.length;i++){
+                data.reviews[i].createdOn = dateformat(data.reviews[i].createdOn,"dd/mm/yyyy HH:MM");
+            }
+            renderDetailpage(req,res,data);
+        } else {
+            showError(req,res,responseApi.statusCode);
         }
-        renderDetailpage(req,res,data);
     });
 };
 
@@ -77,6 +73,23 @@ var renderDetailpage =  function(req,res,detailData){
     });
 };
 
+var showError = function(req,res,status){
+    var title, content;
+    if(status === 400){
+        title = "404, page not found";
+        content = "Oh dear, Look like we can't find this page, Sorry. ";
+    } else {
+        title = status + ", something's gone wrong";
+        content = "Something, somewhere, has gone just a little bit wrong.";
+    }
+
+    res.status(status);
+    res.render("generic-text",{
+        title: title,
+        content : content,
+        author: "ThanhDC 2017"
+    });
+}
 
 module.exports.homelist = function(req,res){
     var requestOptions, path;
