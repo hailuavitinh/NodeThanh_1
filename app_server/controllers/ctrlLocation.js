@@ -1,4 +1,5 @@
 var request = require("request");
+var dateformat = require("dateformat");
 var apiOptions = {server:"http://localhost:3000"};
 if(process.env.NODE_ENV === "production"){
     apiOptions.server = "https://thanhdc.xyz";
@@ -28,8 +29,11 @@ module.exports.locationInfo = function(req,res){
             lng: body.coords[0],
             lat: body.coords[1]
         };
+
+        for( var i = 0 ; i < data.reviews.length;i++){
+            data.reviews[i].createdOn = dateformat(data.reviews[i].createdOn,"dd/mm/yyyy HH:MM");
+        }
         renderDetailpage(req,res,data);
-        //res.render("location-info",{title:"Location Info"});
     });
 };
 

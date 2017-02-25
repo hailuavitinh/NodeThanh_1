@@ -11,7 +11,7 @@
         <div class="container">
             <div class="row page-header">
                 <div class="col-lg-12">
-                    <h1>Starcups</h1>
+                    <h1><%=location.name%></h1>
                 </div>
             </div>
             <div class="row">
@@ -73,58 +73,39 @@
                                     <h2 class="panel-title"> Customer reviews</h2>
                                 </div>
                                 <div class="panel-body review-container">
-                                    <%for(var i = 0 ; i < locations.reviews.length ; i++){%>
-                                        
-                                    }%>
-
-
-
+                                <%for(var i = 0 ; i < location.reviews.length ; i++){
+                                    var review = location.reviews[i];
+                                 %>
                                     <div class="row">
                                         <div class="review">
                                             <div class="well well-sm review-header">
                                                 <span class="rating">
-                                                  <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
+                                                
+                                            <%for(var j = 1; j <= 5 ; j++){
+                                                if(j <= review.rating){%>
+                                                    <span class="glyphicon glyphicon-star"></span>
+                                                <%} else {%>
+                                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                                <%}
+                                            } %>
                                                 </span>
-                                                <span class="reviewAuthor"> ThanhDC3</span>
-                                                <small class="reviewTimestamp">06 Jan 2017</small>
+                                                <span class="reviewAuthor"> <%=review.author%></span>
+                                                <small class="reviewTimestamp"><%=review.createdOn%></small>
                                             </div>
                                             <div class="col-xs-12">
-                                                <p>What a great place. I can't say enough good things about it.</p>
+                                                <p><%=review.reviewText%></p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="review">
-                                            <div class="well well-sm review-header">
-                                                <span class="rating">
-                                                  <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                </span>
-                                                <span class="reviewAuthor"> Hua Ngoc Dung</span>
-                                                <small class="reviewTimestamp">29 Oct 2016</small>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <p>It was okay. Coffee wasn't great, but the wifi was fast. </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <%}%>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-md-3">
-                    <p class="lead">Simon 's cafe is on Loc8r because it has accessible wifi and space to sit down with your laptop and get
-                        some work done</p>
-                    <p>If you've have been and you like it - or if you don't - please leave a review to help other people just
-                        like you</p>
+                    <p class="lead"><%=location.name + ' '+ sidebar.context%></p>
+                    <p><%=sidebar.callToAction%></p>
                 </div>
             </div>
         </div>
