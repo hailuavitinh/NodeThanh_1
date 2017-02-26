@@ -69,7 +69,8 @@ var doAddReview = function(req,res,location){
         location.save(function(err,location){
             var thisReview;
             if(err){
-                sendResponseJson(res,404,err);
+                console.log("API -- doAddReview: ".err);
+                sendResponseJson(res,400,err);
             }else{
                 thisReview = location.reviews[location.reviews.length - 1];
                 updateAverageRating(location._id);

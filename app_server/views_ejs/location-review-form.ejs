@@ -14,7 +14,13 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12 col-md-6">
-                        <form class="form-horizontal" action="/location" method="get" role="form">
+                        <form id="addReview" class="form-horizontal" action="" method="POST" role="form">
+                            <%if(error == "val") {%>
+                                <div class="alert alert-danger" role="alert">
+                                    All fields required, please try again
+                                </div>
+                            <%}%>
+
                             <div class="form-group">
                                 <label class="col-xs-10 col-sm-2 control-label" for="name">Name</label>
                                 <div class="col-xs-12 col-sm-10">
@@ -54,3 +60,16 @@
             </footer>
     </body>
 </html>
+<script>
+    $("#addReview").submit(function(event){
+    $(".alert.alert-danger").hide();
+    if(!$("input#name").val() || !("select#rating").val()|| !("textarea#review").val()){
+        if($(".alert.alert-danger").length){
+            $(".alert.alert-danger").show();
+        } else{
+            $(this).prepend("<div role='alert' class='alert alert-danger'>All fiels required, please try again</div>");
+        }
+        return false;
+    }
+})
+</script>

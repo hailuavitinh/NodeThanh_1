@@ -34,9 +34,72 @@ module.exports.locationInfo = function(req,res){
 };
 
 module.exports.addReview = function(req,res){
-    res.render("index",{title:"Add review"});
+    getLocationInfo(req,res,function(req,res,responseData){
+        renderReviewForm(req,res,responseData);
+    });
 };
 
+module.exports.doAddReview = function(req,res){
+    console.log("Access POST Review");
+    var postData = {
+        author : req.body.name,
+        rating: parseInt(req.body.rating,10),
+        reviewText: req.body.review
+    };
+
+    var locationid = req.params.locationid;
+    var path = "/api/locations/"+locationid+"/reviews";
+    var requestOption = {
+        url:apiOptions.server + path,
+        method:"POST",
+        json:postData
+    };
+
+    if(!postData.author && !postData.rating && !postData.reviewText){
+        res.redirect("/location/"+locationid+"/reviews/new?err=val");
+    } else{
+        request(requestOption,function(err,responseApi,body){
+            if(responseApi.statusCode === 201){
+                res.redirect("/location/"+locationid);
+            } else if (responseApi.statusCode === 404 && body.name && body.name === "ValidationError") {
+                res.redirect("/location/"+locationid+"/reviews/new?err=val");
+            }else {
+                console.log("Server -- doAddReview: ",body);
+                showError(req,res,responseApi.statusCode);
+            }
+        });
+    }
+}
+
+var getLocationInfo = function(req,res,callback){
+    var requestOption, path;
+    path = "/api/locations/"+req.params.locationid;
+    requestOption = {
+        url: apiOptions.server + path,
+        method:"GET",
+        json:{}
+    };
+    request(requestOption,function(err,responseApi, body){
+        var data = body;
+        if(responseApi.statusCode === 200){
+            data.coords = {
+                lng : body.coords[0],
+                lat : body.coords[1]
+            };
+            callback(req,res,data);
+        } else {
+            showError(req,res,responseApi.statusCode);
+        }
+    });
+};
+
+var renderReviewForm =  function(req,res,locationDetail){
+    res.render("location-review-form",{
+        title:"Review "+ locationDetail.name +" on Loc8r",
+        pageHeader:{title:"Review "+ locationDetail.name},
+        error: req.query.err
+    });
+};
 
 var renderHomepage = function(req,res,responseBody){
     var message;
@@ -103,11 +166,7 @@ module.exports.homelist = function(req,res){
             lat:10.738236
         }
     };
-
-    console.log("RequestOptions: ",requestOptions);
-
     request(requestOptions,function(err,responseApi,body){
-        console.log("responseBody: ",body);
         // if(responseApi.statusCode === 200 && body.length > 0){
         //     renderHomepage(req,res,body);
         // }
