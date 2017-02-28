@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
     <header>
         <% include ./layout/header %>
     </header>
-    <body>
+    <body ng-controller="myController">
         <% include ./layout/navbar %>
         <!-- Begin Content  -->
-            <h1><%=title%></h1>
-            <p>Welcome to <%=title%></p>
+            <h1><%#=title%></h1>
+            <p>Welcome to <%#=title%></p>
+            <input ng-model="myInput" type="text">
+            <h1>{{myInput}}</h1>
         <!-- end Content  -->
         <footer>
             <% include ./layout/footer %>

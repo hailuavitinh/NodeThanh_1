@@ -173,3 +173,7 @@ module.exports.homelist = function(req,res){
         renderHomepage(req,res,body)
     });
 };
+
+module.exports.angularView = function(req,res){
+    res.render("index");
+}
