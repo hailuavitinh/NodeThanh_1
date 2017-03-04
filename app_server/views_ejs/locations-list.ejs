@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="loc8App">
 
 <head>
     <% include ./layout/header %>
@@ -17,33 +17,27 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-controller="locationListCtrl">
                 <div class="col-xs-12 col-sm-8">
-                    <%message%>
+                    <label for="filter">Filter results</label>
+                    <input id="filter" type="text" name="filter" ng-model="textFilter">
+                    {{message}}
                     <div class="list-group">
-                        <div class="col-xs-12 list-group-item">
-                            <% locations.forEach(function(itemLocation){%>
+                        <div class="col-xs-12 list-group-item" ng-repeat="location in data.locations | filter : textFilter">
                             <h4>
-                                <a href="<%='/location/'+itemLocation._id%>"><%=itemLocation.name%></a>
-                                <small>&nbsp;
-                                    <%for (var i = 1; i <= 5 ; i++ ){
-                                        if(i <= itemLocation.rating){%>
-                                            <span class="glyphicon glyphicon-star"></span>
-                                        <%} else {%>
-                                            <span class="glyphicon glyphicon-star-empty"></span>
-                                        <%}   
-                                    }%>
+                                <a href="/location/{{location._id}}">{{location.name}}</a>
+                                <small rating-starts rating="location.rating">&nbsp;
+                                    
                                 </small>
-                                <span class="badge pull-right badge-default"><%=Math.round(itemLocation.distance) + ' m'%></span>
+                                <span class="badge pull-right badge-default">{{location.distance | formatDis}}</span>
                             </h4>
-                            <p class="address"><%=itemLocation.address%></p>
+                            <p class="address">{{location.address}}</p>
                             <p>
-                                <%for(var i = 0;i < itemLocation.facilities.length;i++){%>
-                                    <span class="label label-warning"><%=itemLocation.facilities[i]%></span> &nbsp;
-                                <%}%>
+                               <span class="label label-warning" ng-repeat="facility in location.facilities">
+                                &nbsp; {{facility}}
+                               </span> 
+                                
                             </p>
-
-                            <%});%>
                         </div>
                     </div>
                 </div>
