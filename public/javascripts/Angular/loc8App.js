@@ -1,14 +1,36 @@
 
 
-var locationListCtrl = function($scope,loc8rData){
-    $scope.message = "Searching for nearby places";
-    loc8rData.then(function(success){
-        $scope.message = success.data.length > 0 ? "0" : "Nolocations found";
-        $scope.data = {locations:success.data};
-        console.log("Sucess :",success);
-    },function(error){
-        scope.message = "Sorry, something's gone wrong";
-    })
+var locationListCtrl = function($scope,loc8rData,geolocation){
+    $scope.message = "Checking your location";
+
+    var getData = function(position){
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        console.log("Position: ",position);
+        $scope.message = "Searching for nearby places";
+        loc8rData.locationByCoors(lat,lng).then(function(success){
+            $scope.message = success.data.length > 0 ? "0" : "Nolocations found";
+            $scope.data = {locations:success.data};
+            console.log("Sucess :",success);
+        },function(error){
+            scope.message = "Sorry, something's gone wrong";
+        });
+    }
+
+
+    var showError = function(error){
+        $scope.apply(function(){
+            $scope.message = error.message
+        });
+    };
+
+    var noGeo = function(){
+        $scope.apply(function(){
+            $scope.message = "Geolocation not supported by this browser."        
+        });
+    }
+
+    geolocation.getPosition(getData,showError,noGeo);
 };
 
 var _isNumberic = function(n){
@@ -18,7 +40,7 @@ var _isNumberic = function(n){
 var geolocation = function(){
     var getPosition = function (cbSuccess, cbError, cbNoGeo){
         if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(cbSucess,cbError);
+            navigator.geolocation.getCurrentPosition(cbSuccess,cbError);
         } else {
             cbNoGeo();
         }
@@ -56,7 +78,14 @@ var ratingStars = function(){
 };
 
 var loc8rData = function($http){
-    return $http.get("/api/locations?lng=106.628732&lat=10.738236");
+
+    var locationByCoors = function(lat,lng){
+        return $http.get("/api/locations?lng="+lng+"&lat="+lat);
+    };
+
+    return {
+        locationByCoors : locationByCoors
+    };
 }
 
 angular.module("loc8App",[])
