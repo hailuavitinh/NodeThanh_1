@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.set("views",path.join(__dirname,"app_server","views_ejs"));
 app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,"app_client")));
 
 app.use("/",routes);
 app.use("/api",routesApi);
