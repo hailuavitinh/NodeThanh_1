@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loc8rApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Loc8r</title>
+    <link rel="stylesheet" href='/bootstrap/css/amelia-bootstrap.css' type='text/css'>
+    <link rel="stylesheet" href='/stylesheets/style.css' type='text/css'>
+    <script src="/javascripts/jquery-3.1.1.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/javascripts/angular.min.js"></script>
+    <!--<script src="/javascripts/Angular/loc8App.js"></script>-->
+    <script src="/lib/angular-route.min.js"></script>
+
+    <!--<script src="/angular/loc8r.min.js"></script>-->
+
+    <script src="/app.js"></script>
+    <script src="/home/home.controller.js"></script>
+    <script src="/common/services/loc8rData.service.js"></script>
+    <script src="/common/services/geolocation.service.js"></script>
+    <script src="/common/filters/formatDistance.filter.js"></script>
+    <script src="/common/directive/ratingStars.directive.js"></script>
+    <script src="/common/directive/footerGeneric.directive.js"></script>
+    <script src="/common/directive/navigation.directive.js"></script>
+    <script src="/common/directive/pageHeader.directive.js"></script>
+</head>
+
+<body>
+    <navigation></navigation>
+    <!-- Begin Content  -->
+        <div class="container" ng-view>
+        </div>
+    <!-- end Content  -->
+
+    <!--Footer tag directive-->
+    <footer-generic></footer-generic>
+</body>
+
+</html>
