@@ -29,14 +29,14 @@ var appClientFiles = [
     'app_client/common/directive/ratingStars.directive.js',
 ];
 
-var uglified = uglifyJs.minify(appClientFiles,{compress:false});
-fs.writeFile('public/angular/loc8r.min.js',uglified.code,function(err){
-    if(err){
-        console.log(err);
-    } else {
-        console.log("Script generated and save: loc8r.min.js");
-    }
-});
+// var uglified = uglifyJs.minify(appClientFiles,{compress:false});
+// fs.writeFile('public/angular/loc8r.min.js',uglified.code,function(err){
+//     if(err){
+//         console.log(err);
+//     } else {
+//         console.log("Script generated and save: loc8r.min.js");
+//     }
+// });
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,"app_client")));
