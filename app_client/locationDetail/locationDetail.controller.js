@@ -2,8 +2,8 @@
     angular.module("loc8rApp")
         .controller("locationDetailCtrl",locationDetailCtrl);
     
-    locationDetailCtrl.$inject = ["$routeParams","loc8rData"];
-    function locationDetailCtrl ($routeParams,loc8rData){
+    locationDetailCtrl.$inject = ["$routeParams","$uibModal","loc8rData"];
+    function locationDetailCtrl ($routeParams,$uibModal,loc8rData){
         var vm = this;
         vm.locationid = $routeParams.locationid;
         vm.pageHeader = {
@@ -22,5 +22,28 @@
         },function(error){
             console.log(error);
         });
-    }
+
+        vm.popupReviewForm = function(){
+            var modalInstance = $uibModal.open({
+                templateUrl:"/reviewModal/reviewModal.view.html",
+                controller:"reviewModalCtrl",
+                controllerAs: "vm",
+                resolve:{
+                    locationData : function(){
+                        return {
+                            locationid: vm.locationid,
+                            locationName: vm.data.location.name
+                        };
+                    }//end function locationData
+                } // end resolve
+            });
+
+            modalInstance.result.then(function(dataReview){
+                vm.data.location.reviews.push(dataReview);
+            },function(){
+                console.log("Modal dismissed at: ",new Date());
+            })
+        };
+
+    }//end function
 })();
