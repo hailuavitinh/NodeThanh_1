@@ -1,3 +1,4 @@
+require("dotenv").load();
 var express = require("express");
 var path = require('path');
 var uglifyJs = require("uglify-js");
@@ -57,4 +58,5 @@ app.use(function(req,res){
 
 app.listen(port,function(){
     console.log("Server listenning ....");
+    console.log("ENV Secret:",process.env.JWT_SECRET);
 });
