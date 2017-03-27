@@ -5,8 +5,10 @@ var uglifyJs = require("uglify-js");
 var fs = require("fs");
 var https = require("https");
 var bodyParser = require("body-parser");
-require("./app_api/models/db.js");
+var passport = require("passport");
 
+require("./app_api/models/db.js");
+require("./app_api/config/passport")
 
 //require manual module
 var routes = require("./app_server/routes/index");
@@ -41,6 +43,8 @@ var appClientFiles = [
 
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,"app_client")));
+
+app.use(passport.initialize());
 
 //app.use("/",routes);
 app.use("/api",routesApi);

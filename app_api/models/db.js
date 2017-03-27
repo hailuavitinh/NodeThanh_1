@@ -60,4 +60,5 @@ process.on("SIGTERM",function(){
 });
 
 require("./locations");
+require("./users.js");
 
