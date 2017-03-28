@@ -15,6 +15,7 @@ module.exports.register = function(req,res){
     var user = new User();
     user.name = req.body.name;
     user.email = req.body.email;
+    
     user.setPassword(req.body.password);
     user.save(function(err){
         var token;
@@ -26,7 +27,7 @@ module.exports.register = function(req,res){
         }
     });
 }
-
+ 
 
 module.exports.login = function(req,res){
     if(!req.body.email || !req.body.password){

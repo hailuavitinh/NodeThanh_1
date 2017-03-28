@@ -60,6 +60,13 @@ app.use(function(req,res){
 
 //app.use("/users",users);
 
+app.use(function(err,req,res,next){
+    if(err.name === "UnauthorizedError"){
+        res.status(401);
+        res.json({"message":err.name+": "+err.message});
+    }
+});
+
 app.listen(port,function(){
     console.log("Server listenning ....");
     console.log("ENV Secret:",process.env.JWT_SECRET);

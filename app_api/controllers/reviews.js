@@ -1,26 +1,49 @@
 var mongoose = require("mongoose");
 var Loc = mongoose.model("Location");
+var User = mongoose.model("User");
 
 var sendResponseJson = function(res,status,content){
     res.status(status);
     res.json(content);
 }
 
-module.exports.reviewsCreate = function(req,res){
-    var locationID = req.params.locationid;
-    if(locationID){
-        Loc.findById(locationID)
-            .select("reviews")
-            .exec(function(err,location){
-                if(err){
-                    sendResponseJson(res,404,err);
-                } else {
-                    doAddReview(req,res,location);
-                }
-            })
-    } else{
-        sendResponseJson(res,404,{"message":"please check parameter"});
+var getAuthor = function(req,res,callback){
+    if(req.payload && req.payload.email){
+        User.findOne({email:req.payload.email})
+        .exec(function(err,user){
+            if(!user){
+                sendResponseJson(res,404,{"message":"User not found"});
+                return ;
+            } else if(err){
+                sendResponseJson(res,404,err);
+                return ;
+            }
+
+            callback(req,res,user.name);
+        })
+    } else {
+        sendResponseJson(res,404,{"message":"User not found"});
+        return ;
     }
+}
+
+module.exports.reviewsCreate = function(req,res){
+    getAuthor(req,res,function(req,res,username){
+        var locationID = req.params.locationid;
+        if(locationID){
+            Loc.findById(locationID)
+                .select("reviews")
+                .exec(function(err,location){
+                    if(err){
+                        sendResponseJson(res,404,err);
+                    } else {
+                        doAddReview(req,res,location,username);
+                    }
+                })
+        } else{
+            sendResponseJson(res,404,{"message":"please check parameter"});
+        }
+    });
 };
 
 module.exports.reviewsUpdateOne = function(req,res){
@@ -59,10 +82,10 @@ module.exports.reviewsUpdateOne = function(req,res){
     }
 };
 
-var doAddReview = function(req,res,location){
+var doAddReview = function(req,res,location,author){
     if(location){
         location.reviews.push({
-            author:req.body.author,
+            author:author,
             rating:req.body.rating,
             reviewText:req.body.reviewText
         });
