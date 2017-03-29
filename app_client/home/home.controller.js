@@ -32,17 +32,22 @@
 
 
         var showError = function (error) {
-            $scope.apply(function () {
+            $scope.$apply(function () {
                 vm.message = error.message
             });
         };
 
         var noGeo = function () {
-            $scope.apply(function () {
+            $scope.$apply(function () {
                 vm.message = "Geolocation not supported by this browser."
             });
         };
 
-        geolocation.geoPosition(getData, showError, noGeo);
+        var position = {coords:{
+            latitude:10.7539722,
+            longitude:106.7406975
+        }};
+        getData(position);
+        //geolocation.geoPosition(getData, showError, noGeo);
     }
 })();

@@ -25,7 +25,7 @@ var theEarth = (function(){
 module.exports.locationsListByDistance = function (req,res) {
 
     console.log("Access locationsListByDistance");
-    console.log("Request: ",req);
+    //console.log("Request: ",req);
     console.log("Request IP: ",req.connection.remoteAddress);
 
     var lng = parseFloat(req.query.lng);
