@@ -6,6 +6,7 @@ var fs = require("fs");
 var https = require("https");
 var bodyParser = require("body-parser");
 var passport = require("passport");
+var request_ip = require("request-ip");
 
 require("./app_api/models/db.js");
 require("./app_api/config/passport")
@@ -18,6 +19,7 @@ var routesApi = require("./app_api/routes/index");
 var app = express();
 var port = process.env.port || 3000;
 
+app.use(request_ip.mw());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.set("views",path.join(__dirname,"app_server","views_ejs"));
