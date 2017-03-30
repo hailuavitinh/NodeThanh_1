@@ -15,6 +15,7 @@
         };
 
         vm.returnPage = $location.search().page || '/';
+        console.log("returnpage:",vm.returnPage);
 
         vm.onSubmit = function(){
             vm.formError = "";
@@ -31,9 +32,7 @@
             authentication.login(vm.credentials).then(function(success){
                 authentication.saveToken(success.data.token);
                 $location.search('page',null);
-                $rootScope.$apply(function(){
-                    $location.path(vm.returnPage);
-                });
+                $location.path(vm.returnPage);
             },function(err){
                 vm.formError = err;
             });

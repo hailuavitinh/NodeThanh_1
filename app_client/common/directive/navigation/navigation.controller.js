@@ -6,7 +6,7 @@
     function navigationCtrl($location,authentication){
         var vm = this;
         vm.currentPath = $location.path();
-        console.log(vm.currentPath );
+        console.log("currentPath: ",vm.currentPath);
 
         vm.isLoggedIn = authentication.isLoggedIn();
         vm.currentUser = authentication.currentUser();
